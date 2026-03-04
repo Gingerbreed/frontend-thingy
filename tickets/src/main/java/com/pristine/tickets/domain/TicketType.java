@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -41,5 +43,7 @@ public class TicketType {
   @LastModifiedDate
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
-  //TODO: Tickets
+
+  @OneToMany(mappedBy = "ticketType", cascade = CascadeType.ALL)
+  private List<Ticket> tickets = new ArrayList<>();
 }

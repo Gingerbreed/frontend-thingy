@@ -2,7 +2,10 @@ package com.pristine.tickets.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -34,5 +37,13 @@ public class Ticket {
   //TODO: Validation
 
   //TODO: QR Code Hash
+
+  @CreatedDate
+  @Column(name = "created_at", updatable = false, nullable = false)
+  private LocalDateTime createdAt;
+
+  @LastModifiedDate
+  @Column(name = "updated_at", nullable = false)
+  private LocalDateTime updatedAt;
 
 }
