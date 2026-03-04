@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.xml.catalog.Catalog;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class Event {
 
   @ManyToMany(mappedBy = "staffingEvents")
   private List<User> staff = new ArrayList<>();
+
+  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+  private List<TicketType> ticketTypes = new ArrayList<>();
 
   @CreatedDate
   @Column(name = "created_at", updatable = false, nullable = false)
