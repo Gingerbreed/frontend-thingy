@@ -1,4 +1,4 @@
-package com.pristine.tickets.domain;
+package com.pristine.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +29,9 @@ public class TicketType {
 
   @Column(name = "price", nullable = false)
   private double price;
+
+  @Column(name = "description")
+  private String description;
 
   @Column(name = "total_available")
   private int totalAvailable;

@@ -1,4 +1,4 @@
-package com.pristine.tickets.domain;
+package com.pristine.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +17,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
     @Id
     @Column(name = "id", updatable = false, nullable = false)
