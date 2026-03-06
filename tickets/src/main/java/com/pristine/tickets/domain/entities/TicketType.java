@@ -55,11 +55,11 @@ public class TicketType {
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
     TicketType that = (TicketType) o;
-    return Double.compare(price, that.price) == 0 && totalAvailable == that.totalAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+    return Double.compare(price, that.price) == 0 && totalAvailable == that.totalAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, price, totalAvailable, createdAt, updatedAt);
+    return Objects.hash(id, name, price, description, totalAvailable, createdAt, updatedAt);
   }
 }
