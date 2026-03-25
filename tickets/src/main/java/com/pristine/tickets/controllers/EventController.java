@@ -3,6 +3,7 @@ package com.pristine.tickets.controllers;
 import com.pristine.tickets.domain.CreateEventRequest;
 import com.pristine.tickets.domain.dtos.CreateEventReponseDto;
 import com.pristine.tickets.domain.dtos.CreateEventRequestDto;
+import com.pristine.tickets.domain.dtos.GetEventDetailsResponseDto;
 import com.pristine.tickets.domain.dtos.ListEventResponseDto;
 import com.pristine.tickets.domain.entities.Event;
 import com.pristine.tickets.mappers.EventMapper;
@@ -44,6 +45,17 @@ public class EventController {
       ){
           Page<Event> events = eventService.listEventsForOrganizer(parseUserId(jwt), pageable);
           return ResponseEntity.ok(events.map(eventMapper::toListEventResponseDto));
+      }
+
+      @GetMapping(path = "/{eventId}")
+      public ResponseEntity<GetEventDetailsResponseDto> GetEvent(
+        @AuthenticationPrincipal Jwt jwt, @PathVariable UUID eventId
+      ){
+         return eventService.getEventForOrganizer(parseUserId(jwt), eventId)
+           .map(eventMapper::toGetEventDetailsResponseDto)
+           .map(ResponseEntity::ok)
+           .orElse(ResponseEntity.notFound().build());
+
       }
 
       private UUID parseUserId(Jwt jwt){
