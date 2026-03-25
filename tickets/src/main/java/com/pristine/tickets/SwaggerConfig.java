@@ -2,6 +2,7 @@ package com.pristine.tickets;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,11 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
   @Bean
-  public OpenAPI baseOpenAPI() {
-    return new OpenAPI()
-      .info(new Info()
-        .title("My Spring Boot API Docs")
-        .version("1.0.0")
-        .description("Documentation for my API"));
+  public GroupedOpenApi publicApi() {
+    return GroupedOpenApi.builder()
+      .group("public")
+      .pathsToMatch("/**")
+      .build();
   }
 }
