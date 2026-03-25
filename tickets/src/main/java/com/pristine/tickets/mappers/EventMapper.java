@@ -2,11 +2,9 @@ package com.pristine.tickets.mappers;
 
 import com.pristine.tickets.domain.CreateEventRequest;
 import com.pristine.tickets.domain.CreateTicketTypeRequest;
-import com.pristine.tickets.domain.dtos.CreateEventReponseDto;
-import com.pristine.tickets.domain.dtos.CreateEventRequestDto;
-import com.pristine.tickets.domain.dtos.CreateTicketTypeRequestDto;
-import com.pristine.tickets.domain.dtos.CreateTicketTypeResponseDto;
+import com.pristine.tickets.domain.dtos.*;
 import com.pristine.tickets.domain.entities.Event;
+import com.pristine.tickets.domain.entities.TicketType;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -16,4 +14,6 @@ public interface EventMapper {
     CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
     CreateEventRequest fromDto(CreateEventRequestDto dto);
     CreateEventReponseDto toDto(Event event);
+    ListEventTicketTypeResponseDto toDto(TicketType ticketType);
+    ListEventResponseDto toListEventResponseDto(Event event);
 }

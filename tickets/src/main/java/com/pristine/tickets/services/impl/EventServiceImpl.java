@@ -9,6 +9,8 @@ import com.pristine.tickets.repositories.EventsRepository;
 import com.pristine.tickets.repositories.UserRepository;
 import com.pristine.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,9 @@ public class EventServiceImpl implements EventService {
       .orElseThrow(() -> new UserNotFoundException(
         String.format("User with ID '%s' not found", organizerId))
       );
+
+
+    Event eventToCreate = new Event();
 // Create ticket types
     List<TicketType> ticketTypesToCreate = event.getTicketTypes().stream().map(
       ticketType -> {
@@ -36,10 +41,10 @@ public class EventServiceImpl implements EventService {
         ticketTypeToCreate.setPrice(ticketType.getPrice());
         ticketTypeToCreate.setDescription(ticketType.getDescription());
         ticketTypeToCreate.setTotalAvailable(ticketType.getTotalAvailable());
+        ticketTypeToCreate.setEvent(eventToCreate);
         return ticketTypeToCreate;
       }).toList();
 // Create and populate the event
-    Event eventToCreate = new Event();
     eventToCreate.setName(event.getName());
     eventToCreate.setStart(event.getStart());
     eventToCreate.setEnd(event.getEnd());
@@ -50,5 +55,14 @@ public class EventServiceImpl implements EventService {
     eventToCreate.setOrganizer(organizer);
     eventToCreate.setTicketTypes(ticketTypesToCreate);
     return eventsRepository.save(eventToCreate);
+  }
+
+  @Override
+  public Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable) {
+    User organizer = userRepository.findById(organizerId)
+      .orElseThrow(() -> new UserNotFoundException(
+        String.format("User with ID '%s' not found", organizerId))
+      );
+    return eventsRepository.findByOrganizerId(organizerId, pageable);
   }
 }
