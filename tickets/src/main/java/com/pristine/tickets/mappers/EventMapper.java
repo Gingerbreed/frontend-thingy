@@ -2,6 +2,8 @@ package com.pristine.tickets.mappers;
 
 import com.pristine.tickets.domain.CreateEventRequest;
 import com.pristine.tickets.domain.CreateTicketTypeRequest;
+import com.pristine.tickets.domain.UpdateEventRequest;
+import com.pristine.tickets.domain.UpdateTicketTypeRequest;
 import com.pristine.tickets.domain.dtos.*;
 import com.pristine.tickets.domain.entities.Event;
 import com.pristine.tickets.domain.entities.TicketType;
@@ -13,9 +15,13 @@ public interface EventMapper {
 
     CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
     CreateEventRequest fromDto(CreateEventRequestDto dto);
-    CreateEventReponseDto toDto(Event event);
+    CreateEventResponseDto toDto(Event event);
     ListEventTicketTypeResponseDto toDto(TicketType ticketType);
     GetEventTicketTypesResponseDto toGetEventTicketTypesResponseDto(TicketType ticketType);
     ListEventResponseDto toListEventResponseDto(Event event);
     GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
+    UpdateTicketTypeRequest fromDto(UpdateTicketTypeRequestDto dto);
+    UpdateEventRequest fromDto(UpdateEventRequestDto dto);
+    UpdateEventResponseDto toUpdateEventResponseDto(Event event);
+    UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
 }

@@ -1,4 +1,4 @@
-package com.pristine.tickets.domain.dtos;
+package com.pristine.tickets.domain;
 
 import com.pristine.tickets.domain.entities.EventStatusEnum;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateEventReponseDto {
+public class UpdateEventRequest {
   private UUID id;
   private String name;
   private LocalDateTime start;
@@ -22,7 +22,6 @@ public class CreateEventReponseDto {
   private LocalDateTime salesStart;
   private LocalDateTime salesEnd;
   private EventStatusEnum status;
-  private List<CreateTicketTypeResponseDto> ticketTypes;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private List<UpdateTicketTypeRequest> ticketTypes = new ArrayList<>();
 }
+

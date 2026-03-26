@@ -1,10 +1,8 @@
 package com.pristine.tickets.controllers;
 
 import com.pristine.tickets.domain.CreateEventRequest;
-import com.pristine.tickets.domain.dtos.CreateEventReponseDto;
-import com.pristine.tickets.domain.dtos.CreateEventRequestDto;
-import com.pristine.tickets.domain.dtos.GetEventDetailsResponseDto;
-import com.pristine.tickets.domain.dtos.ListEventResponseDto;
+import com.pristine.tickets.domain.UpdateEventRequest;
+import com.pristine.tickets.domain.dtos.*;
 import com.pristine.tickets.domain.entities.Event;
 import com.pristine.tickets.mappers.EventMapper;
 import com.pristine.tickets.services.EventService;
@@ -29,13 +27,13 @@ public class EventController {
       private final EventService eventService;
 
       @PostMapping
-      public ResponseEntity<CreateEventReponseDto> createEvent(
+      public ResponseEntity<CreateEventResponseDto> createEvent(
         @AuthenticationPrincipal Jwt jwt,
         @Valid @RequestBody CreateEventRequestDto createEventRequestDto
         ){
           CreateEventRequest createEventRequest =  eventMapper.fromDto(createEventRequestDto);
           Event createdEvent = eventService.createEvent(parseUserId(jwt), createEventRequest);
-          CreateEventReponseDto dto = eventMapper.toDto(createdEvent);
+          CreateEventResponseDto dto = eventMapper.toDto(createdEvent);
           return  new ResponseEntity<>(dto, HttpStatus.CREATED);
       }
 
@@ -57,6 +55,18 @@ public class EventController {
            .orElse(ResponseEntity.notFound().build());
 
       }
+
+  @PutMapping(path = "/{eventId}")
+  public ResponseEntity<UpdateEventResponseDto> updateEvent(
+    @AuthenticationPrincipal Jwt jwt,
+    @PathVariable UUID eventId,
+    @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+  ){
+    UpdateEventRequest updateEventRequest =  eventMapper.fromDto(updateEventRequestDto);
+    Event updatedEvent = eventService.updateEventForOrganizer(parseUserId(jwt), eventId, updateEventRequest);
+    UpdateEventResponseDto dto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+    return ResponseEntity.ok(dto);
+  }
 
       private UUID parseUserId(Jwt jwt){
         return UUID.fromString(jwt.getSubject());
