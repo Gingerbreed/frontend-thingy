@@ -3,6 +3,7 @@ package com.pristine.tickets.config;
 import com.pristine.tickets.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,7 +19,14 @@ public class SecurityConfig {
     UserProvisioningFilter userProvisioningFilter) throws Exception {
     http
       .authorizeHttpRequests(authorize ->
-        authorize.anyRequest().authenticated())
+        authorize
+          .requestMatchers(HttpMethod.GET, "/api/v1/published-events").permitAll()
+          .requestMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
+          .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+          .requestMatchers(HttpMethod.GET, "/swagger-ui/index.html").permitAll()
+
+          //Catch all rule
+          .anyRequest().authenticated())
       .csrf(csrf -> csrf.disable())
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

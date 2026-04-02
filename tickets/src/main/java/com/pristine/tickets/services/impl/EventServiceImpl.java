@@ -4,6 +4,7 @@ import com.pristine.tickets.domain.CreateEventRequest;
 import com.pristine.tickets.domain.UpdateEventRequest;
 import com.pristine.tickets.domain.UpdateTicketTypeRequest;
 import com.pristine.tickets.domain.entities.Event;
+import com.pristine.tickets.domain.entities.EventStatusEnum;
 import com.pristine.tickets.domain.entities.TicketType;
 import com.pristine.tickets.domain.entities.User;
 import com.pristine.tickets.exceptions.EventNotFoundException;
@@ -80,10 +81,10 @@ public class EventServiceImpl implements EventService {
   @Override
   @Transactional
   public Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event) {
-    if(null == event.getId()) {
+    if (null == event.getId()) {
       throw new EventUpdateException("Event ID cannot be null");
     }
-    if(!id.equals(event.getId())) {
+    if (!id.equals(event.getId())) {
       throw new EventUpdateException("Cannot update the ID of an event");
     }
     Event existingEvent = eventsRepository
@@ -113,8 +114,8 @@ public class EventServiceImpl implements EventService {
     Map<UUID, TicketType> existingTicketTypesIndex = existingEvent.getTicketTypes().stream()
       .collect(Collectors.toMap(TicketType::getId, Function.identity()));
 
-    for(UpdateTicketTypeRequest ticketType : event.getTicketTypes()) {
-      if(null == ticketType.getId()) {
+    for (UpdateTicketTypeRequest ticketType : event.getTicketTypes()) {
+      if (null == ticketType.getId()) {
         // Create
         TicketType ticketTypeToCreate = new TicketType();
         ticketTypeToCreate.setName(ticketType.getName());
@@ -123,7 +124,7 @@ public class EventServiceImpl implements EventService {
         ticketTypeToCreate.setTotalAvailable(ticketType.getTotalAvailable());
         ticketTypeToCreate.setEvent(existingEvent);
         existingEvent.getTicketTypes().add(ticketTypeToCreate);
-      } else if(existingTicketTypesIndex.containsKey(ticketType.getId())) {
+      } else if (existingTicketTypesIndex.containsKey(ticketType.getId())) {
         // Update
         TicketType existingTicketType = existingTicketTypesIndex.get(ticketType.getId());
         existingTicketType.setName(ticketType.getName());
@@ -143,6 +144,16 @@ public class EventServiceImpl implements EventService {
   @Transactional
   public void deleteEventForOrganizer(UUID organizerId, UUID id) {
     getEventForOrganizer(organizerId, id).ifPresent(eventsRepository::delete);
+  }
+
+  @Override
+  public Page<Event> listPublishedEvents(Pageable pageable) {
+    return eventsRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
+  }
+
+  @Override
+  public Page<Event> searchPublishedEvents(String query, Pageable pageable) {
+    return eventsRepository.searchEvents(query, pageable);
   }
 
 }
