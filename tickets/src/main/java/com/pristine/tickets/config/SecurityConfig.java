@@ -20,7 +20,7 @@ public class SecurityConfig {
     http
       .authorizeHttpRequests(authorize ->
         authorize
-          .requestMatchers(HttpMethod.GET, "/api/v1/published-events").permitAll()
+          .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
           .requestMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
           .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
           .requestMatchers(HttpMethod.GET, "/swagger-ui/index.html").permitAll()
