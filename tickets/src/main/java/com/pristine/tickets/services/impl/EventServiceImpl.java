@@ -139,4 +139,10 @@ public class EventServiceImpl implements EventService {
     return eventsRepository.save(existingEvent);
   }
 
+  @Override
+  @Transactional
+  public void deleteEventForOrganizer(UUID organizerId, UUID id) {
+    getEventForOrganizer(organizerId, id).ifPresent(eventsRepository::delete);
+  }
+
 }

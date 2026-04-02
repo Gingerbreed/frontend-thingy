@@ -25,28 +25,28 @@ public class GlobalExceptionHandler {
 
 
   @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorDto> handleUserNotFoundExeception(UserNotFoundException ex){
+  public ResponseEntity<ErrorDto> handleUserNotFoundExeception(UserNotFoundException ex) {
     log.error("Caught UserNotFoundException", ex);
     String message = String.format("User id does not exist");
     ErrorDto error = new ErrorDto(message);
     return new ResponseEntity<ErrorDto>(error, HttpStatus.BAD_REQUEST);
   }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorDto> handleConstraintViolation(ConstraintViolationException ex){
-      log.error("Caught ConstraintViolationException", ex);
-      ErrorDto dto = new ErrorDto();
-      String beep = ex.getConstraintViolations()
-        .stream()
-        .findFirst()
-        .map(violation -> violation.getPropertyPath() + ":"
-          + violation.getMessage()).orElse("Constraint violation occurred.");
-      dto.setError(beep);
-      return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ErrorDto> handleConstraintViolation(ConstraintViolationException ex) {
+    log.error("Caught ConstraintViolationException", ex);
+    ErrorDto dto = new ErrorDto();
+    String beep = ex.getConstraintViolations()
+      .stream()
+      .findFirst()
+      .map(violation -> violation.getPropertyPath() + ":"
+        + violation.getMessage()).orElse("Constraint violation occurred.");
+    dto.setError(beep);
+    return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+  public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
     log.error("Caught MethodArgumentNotValidException", ex);
     String errorMessage = ex.getBindingResult().getFieldErrors().stream().
       findFirst()
@@ -58,12 +58,12 @@ public class GlobalExceptionHandler {
 
 
   @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDto> handleValidationException(Exception ex){
-       log.error("Caught exception", ex);
-        ErrorDto dto = new ErrorDto();
-        dto.setError("An unknown error occurred.");
-        return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  public ResponseEntity<ErrorDto> handleValidationException(Exception ex) {
+    log.error("Caught exception", ex);
+    ErrorDto dto = new ErrorDto();
+    dto.setError("An unknown error occurred.");
+    return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
   @ExceptionHandler(EventUpdateException.class)
   public ResponseEntity<ErrorDto> handleEventUpdateException(EventUpdateException ex) {
@@ -72,6 +72,7 @@ public class GlobalExceptionHandler {
     errorDto.setError("Unable to update event");
     return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
   }
+
   @ExceptionHandler(TicketTypeNotFoundException.class)
   public ResponseEntity<ErrorDto> handleTicketTypeNotFoundException(TicketTypeNotFoundException ex) {
     log.error("Caught TicketTypeNotFoundException", ex);
